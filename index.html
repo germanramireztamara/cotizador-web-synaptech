@@ -1,0 +1,796 @@
+<!DOCTYPE html>
+<html lang="es" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cotizador Web - Synaptech</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            cyanBrand: '#00D8F6',
+            purpleBrand: '#8A2BE2',
+            brand: {
+              50: '#f0f9ff',
+              100: '#e0f2fe',
+              500: '#00D8F6',
+              600: '#0284c7',
+              700: '#0369a1',
+              900: '#0c4a6e',
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    .brand-gradient-text {
+      background: linear-gradient(135deg, #00D8F6 0%, #8A2BE2 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .brand-gradient-bg {
+      background: linear-gradient(135deg, #00D8F6 0%, #8A2BE2 100%);
+    }
+    .timeline-line::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 19px;
+      width: 2px;
+      background: linear-gradient(180deg, #00D8F6 0%, #8A2BE2 100%);
+      opacity: 0.3;
+    }
+    @media (min-width: 768px) {
+      .timeline-line::before {
+        left: 50%;
+        transform: translateX(-50%);
+      }
+    }
+  </style>
+</head>
+<body class="bg-slate-50 dark:bg-slate-950 text-slate-800 dark:text-slate-100 min-h-screen font-sans pb-24 transition-colors duration-300 antialiased">
+
+  <!-- Header -->
+  <header class="border-b border-slate-200 dark:border-slate-800 bg-white/80 dark:bg-slate-950/80 sticky top-0 z-30 backdrop-blur-md transition-colors duration-300">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+      
+      <!-- Logo + Nombre Synaptech -->
+      <div class="flex items-center space-x-3">
+        <!-- SVG Synaptech Logo -->
+        <svg class="w-10 h-10 flex-shrink-0" viewBox="0 0 500 500" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="215" cy="250" r="35" fill="#00D8F6"/>
+          <path d="M 215 200 A 50 50 0 0 1 250 215 L 250 285 A 50 50 0 0 1 215 300 Z" fill="#00D8F6"/>
+          <path d="M 285 200 A 50 50 0 0 0 250 215 L 250 285 A 50 50 0 0 0 285 300 Z" fill="#8A2BE2"/>
+          <circle cx="285" cy="250" r="35" fill="#8A2BE2"/>
+          <!-- Left Cyan Neurons -->
+          <path d="M 200 230 C 160 220, 150 170, 135 170" stroke="#00D8F6" stroke-width="12" stroke-linecap="round"/>
+          <circle cx="135" cy="170" r="14" fill="#00D8F6"/>
+          <path d="M 195 245 C 160 240, 160 190, 145 190" stroke="#00D8F6" stroke-width="10" stroke-linecap="round"/>
+          <circle cx="145" cy="190" r="11" fill="#00D8F6"/>
+          <path d="M 190 250 C 140 250, 130 205, 115 205" stroke="#00D8F6" stroke-width="14" stroke-linecap="round"/>
+          <circle cx="115" cy="205" r="16" fill="#00D8F6"/>
+          <path d="M 200 270 C 160 280, 140 235, 130 235" stroke="#00D8F6" stroke-width="12" stroke-linecap="round"/>
+          <circle cx="130" cy="235" r="13" fill="#00D8F6"/>
+          <path d="M 210 280 C 180 320, 150 240, 135 240" stroke="#00D8F6" stroke-width="11" stroke-linecap="round"/>
+          <circle cx="135" cy="240" r="12" fill="#00D8F6"/>
+          <!-- Right Purple Neurons -->
+          <path d="M 300 230 C 340 210, 360 180, 395 180" stroke="#8A2BE2" stroke-width="10" stroke-linecap="round"/>
+          <rect x="387" y="172" width="16" height="16" fill="#8A2BE2"/>
+          <path d="M 305 245 C 350 240, 365 195, 395 195" stroke="#8A2BE2" stroke-width="12" stroke-linecap="round"/>
+          <rect x="387" y="187" width="16" height="16" fill="#8A2BE2"/>
+          <path d="M 290 255 C 330 255, 340 220, 380 220" stroke="#8A2BE2" stroke-width="10" stroke-linecap="round"/>
+          <circle cx="290" cy="255" r="8" fill="#8A2BE2"/>
+          <rect x="372" y="212" width="16" height="16" fill="#8A2BE2"/>
+          <path d="M 295 270 C 330 300, 350 230, 385 230" stroke="#8A2BE2" stroke-width="11" stroke-linecap="round"/>
+          <rect x="377" y="222" width="16" height="16" fill="#8A2BE2"/>
+          <path d="M 290 280 C 320 330, 340 245, 375 245" stroke="#8A2BE2" stroke-width="11" stroke-linecap="round"/>
+          <rect x="367" y="237" width="16" height="16" fill="#8A2BE2"/>
+        </svg>
+
+        <div>
+          <h1 class="text-xl font-black tracking-tight brand-gradient-text uppercase">SYNAPTECH</h1>
+          <p class="text-[10px] tracking-wider font-semibold text-slate-500 dark:text-slate-400 -mt-1">Inteligencia en cada conexión</p>
+        </div>
+      </div>
+
+      <!-- Theme Switcher + Admin Panel Button -->
+      <div class="flex items-center space-x-3">
+        <!-- Toggle Modo Claro / Oscuro -->
+        <button onclick="toggleTheme()" class="p-2.5 rounded-xl border border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-900 transition-all text-sm flex items-center justify-center">
+          <i id="themeIcon" class="fa-solid fa-moon"></i>
+        </button>
+
+        <!-- Botón Panel Adm / Cliente -->
+        <div class="bg-slate-100 dark:bg-slate-900 p-1 rounded-xl border border-slate-200 dark:border-slate-800 flex items-center">
+          <button id="btnClientMode" onclick="setMode('client')" class="px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-all duration-200 bg-brand-600 text-white shadow-md">
+            <i class="fa-solid fa-user mr-1.5"></i>Cliente
+          </button>
+          <button id="btnReferralMode" onclick="openAdminModal()" class="px-3.5 py-1.5 rounded-lg text-xs font-semibold text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-all duration-200">
+            <i class="fa-solid fa-lock mr-1.5"></i>Panel Adm
+          </button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Modal Autenticación Panel Adm -->
+  <div id="adminModal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl max-w-md w-full p-6 shadow-2xl relative">
+      <div class="text-center mb-6">
+        <div class="w-12 h-12 bg-purple-500/10 border border-purple-500/20 text-purple-500 rounded-full flex items-center justify-center mx-auto mb-3 text-lg">
+          <i class="fa-solid fa-shield-halved"></i>
+        </div>
+        <h3 class="text-lg font-bold text-slate-900 dark:text-white">Acceso al Panel Adm</h3>
+        <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Ingresa el código para gestionar comisiones y sobrecostos.</p>
+      </div>
+
+      <form onsubmit="handleAdminAuth(event)" class="space-y-4">
+        <div>
+          <label class="block text-xs font-medium text-slate-600 dark:text-slate-400 mb-1">Código de Seguridad</label>
+          <input type="password" id="adminCodeInput" placeholder="••••••••••••••••" class="w-full bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-800 rounded-lg px-3.5 py-2.5 text-sm text-slate-900 dark:text-white focus:outline-none focus:border-cyanBrand transition-all" required>
+          <p id="authError" class="text-red-500 text-xs mt-1.5 hidden flex items-center gap-1">
+            <i class="fa-solid fa-circle-exclamation"></i> Código incorrecto. Revisa e intenta de nuevo.
+          </p>
+        </div>
+
+        <div class="flex items-center space-x-3 pt-2">
+          <button type="button" onclick="closeAdminModal()" class="w-1/2 py-2.5 rounded-lg border border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 text-xs font-semibold transition-all">
+            Cancelar
+          </button>
+          <button type="submit" class="w-1/2 brand-gradient-bg text-white py-2.5 rounded-lg text-xs font-semibold shadow-lg shadow-purple-500/20 transition-all">
+            Ingresar
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-8">
+    
+    <!-- Banner Panel Adm Activo -->
+    <div id="referralBanner" class="hidden mb-6 bg-gradient-to-r from-emerald-950/40 via-slate-900 to-slate-900 border border-emerald-500/30 rounded-2xl p-4 flex items-center justify-between text-xs text-emerald-300">
+      <div class="flex items-center space-x-3">
+        <span class="p-2 bg-emerald-500/10 rounded-lg border border-emerald-500/20 text-emerald-400 text-base">
+          <i class="fa-solid fa-handshake"></i>
+        </span>
+        <div>
+          <span class="font-bold text-white text-sm block">Panel Administrativo de Referidos Activo</span>
+          <span>Configura sobrecostos (50/50) y visualiza comisiones base (10%).</span>
+        </div>
+      </div>
+      <button onclick="setMode('client')" class="bg-slate-800 hover:bg-slate-700 text-slate-300 px-3 py-1.5 rounded-lg text-xs transition-all border border-slate-700">
+        Cerrar Sesión Adm
+      </button>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+      
+      <!-- COLUMNA IZQUIERDA: Opciones (7 Cols) -->
+      <div class="lg:col-span-7 space-y-6">
+        
+        <!-- Paso 1: Planes Web -->
+        <div class="bg-white dark:bg-slate-950/60 border border-slate-200 dark:border-slate-800/80 rounded-2xl p-6 backdrop-blur-sm shadow-sm transition-colors duration-300">
+          <h2 class="text-sm font-semibold uppercase tracking-wider text-cyanBrand mb-4 flex items-center gap-2">
+            <span class="w-6 h-6 rounded-full bg-cyanBrand/10 text-cyanBrand flex items-center justify-center text-xs font-bold">1</span>
+            Selecciona el Tipo de Solución Web
+          </h2>
+
+          <div class="space-y-3" id="servicesList">
+            <!-- Dinámico JS -->
+          </div>
+        </div>
+
+        <!-- Paso 2: Sobrecosto (Solo Panel Adm) -->
+        <div id="markupSection" class="hidden bg-emerald-950/20 border border-emerald-500/30 rounded-2xl p-6 backdrop-blur-sm">
+          <div class="flex items-center justify-between mb-4">
+            <h2 class="text-sm font-semibold uppercase tracking-wider text-emerald-400 flex items-center gap-2">
+              <span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-xs font-bold">2</span>
+              Ajuste de Sobrecosto (Margen Aliado)
+            </h2>
+            <span class="text-xs text-slate-400">Máximo sugerido: +30%</span>
+          </div>
+
+          <div class="space-y-4">
+            <div>
+              <div class="flex justify-between text-xs mb-1.5">
+                <span class="text-slate-300 font-medium">Incremento sobre precio base:</span>
+                <span id="markupDisplayVal" class="text-emerald-400 font-bold">$0 COP (+0%)</span>
+              </div>
+              <input type="range" id="markupRange" min="0" max="1000000" step="50000" value="0" oninput="updateCalculation()" class="w-full accent-emerald-500 bg-slate-800 rounded-lg h-2 cursor-pointer">
+            </div>
+
+            <div class="grid grid-cols-2 gap-3 text-xs bg-slate-900/80 p-3 rounded-xl border border-slate-800">
+              <div>
+                <span class="text-slate-400 block">Tu Ganancia por Sobrecosto (50%):</span>
+                <span id="referralMarkupShare" class="text-emerald-400 font-bold text-sm">$0 COP</span>
+              </div>
+              <div>
+                <span class="text-slate-400 block">Ganancia Dev por Sobrecosto (50%):</span>
+                <span id="devMarkupShare" class="text-slate-200 font-bold text-sm">$0 COP</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Paso 3: Adicionales -->
+        <div class="bg-white dark:bg-slate-950/60 border border-slate-200 dark:border-slate-800/80 rounded-2xl p-6 backdrop-blur-sm shadow-sm transition-colors duration-300">
+          <h2 class="text-sm font-semibold uppercase tracking-wider text-cyanBrand mb-4 flex items-center gap-2">
+            <span class="w-6 h-6 rounded-full bg-cyanBrand/10 text-cyanBrand flex items-center justify-center text-xs font-bold" id="stepAddonsNum">2</span>
+            Módulos y Servicios Adicionales
+          </h2>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3" id="addonsList">
+            <!-- Dinámico JS -->
+          </div>
+        </div>
+
+        <!-- Inclusiones -->
+        <div class="bg-slate-100 dark:bg-slate-950/40 border border-slate-200 dark:border-slate-800/50 rounded-2xl p-5 text-xs text-slate-600 dark:text-slate-400 space-y-3 transition-colors duration-300">
+          <h3 class="font-semibold text-slate-900 dark:text-slate-300 text-sm flex items-center gap-2">
+            <i class="fa-solid fa-circle-check text-cyanBrand"></i> Todos nuestros proyectos incluyen:
+          </h3>
+          <ul class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 text-slate-700 dark:text-slate-300">
+            <li class="flex items-center gap-2"><i class="fa-solid fa-check text-emerald-500"></i> Optimización SEO & GEO (Motores IA)</li>
+            <li class="flex items-center gap-2"><i class="fa-solid fa-check text-emerald-500"></i> Ciberseguridad & Buenas Prácticas</li>
+            <li class="flex items-center gap-2"><i class="fa-solid fa-check text-emerald-500"></i> Prototipado y Diseño Visual</li>
+            <li class="flex items-center gap-2"><i class="fa-solid fa-check text-emerald-500"></i> Visualización previa en Hosting/Dominio temporal</li>
+          </ul>
+          <p class="text-[11px] text-slate-500 dark:text-slate-500 border-t border-slate-200 dark:border-slate-800/60 pt-2">
+            * Valor de hosting y dominio definitivo no incluido. Pago diferido en 2 hitos (50% anticipo / 50% contra entrega final).
+          </p>
+        </div>
+
+      </div>
+
+      <!-- COLUMNA DERECHA: Resumen (5 Cols) -->
+      <div class="lg:col-span-5">
+        <div class="bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 sticky top-28 shadow-xl transition-colors duration-300">
+          
+          <h2 class="text-base font-bold text-slate-900 dark:text-white mb-4 border-b border-slate-200 dark:border-slate-800 pb-3 flex items-center justify-between">
+            <span>Resumen de Cotización</span>
+            <span id="badgeMode" class="text-xs font-normal px-2.5 py-0.5 rounded-full bg-cyanBrand/10 text-cyanBrand border border-cyanBrand/20">
+              Vista Cliente
+            </span>
+          </h2>
+
+          <!-- Precios -->
+          <div class="space-y-3 text-sm mb-6">
+            <div class="flex justify-between text-slate-600 dark:text-slate-400">
+              <span>Plan Base Seleccionado:</span>
+              <span id="summaryBasePrice" class="text-slate-900 dark:text-slate-200 font-semibold">$0 COP</span>
+            </div>
+
+            <div id="rowSummaryMarkup" class="hidden flex justify-between text-emerald-500">
+              <span>Sobrecosto Aliado:</span>
+              <span id="summaryMarkupPrice" class="font-semibold">+$0 COP</span>
+            </div>
+
+            <div class="flex justify-between text-slate-600 dark:text-slate-400">
+              <span>Servicios Adicionales:</span>
+              <span id="summaryAddonsPrice" class="text-slate-900 dark:text-slate-200 font-semibold">$0 COP</span>
+            </div>
+
+            <div class="border-t border-slate-200 dark:border-slate-800 pt-3 flex justify-between items-baseline">
+              <span class="text-slate-900 dark:text-slate-200 font-bold text-base">Inversión Total Bruta:</span>
+              <span id="summaryTotalPrice" class="text-2xl font-extrabold brand-gradient-text">$0 COP</span>
+            </div>
+            <p class="text-[10px] text-slate-400 dark:text-slate-500 text-right">No incluye retenciones e impuestos aplicables.</p>
+          </div>
+
+          <!-- Pagos Cliente 50/50 -->
+          <div class="bg-slate-50 dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800/80 rounded-xl p-4 mb-6 space-y-2">
+            <span class="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 block mb-2">Esquema de Pagos (50% / 50%)</span>
+            <div class="flex justify-between text-xs text-slate-700 dark:text-slate-300">
+              <span><i class="fa-solid fa-play text-cyanBrand mr-1.5"></i>50% Anticipo Inicial:</span>
+              <span id="payInitial" class="font-bold text-slate-900 dark:text-white">$0 COP</span>
+            </div>
+            <div class="flex justify-between text-xs text-slate-700 dark:text-slate-300">
+              <span><i class="fa-solid fa-flag-checkered text-emerald-500 mr-1.5"></i>50% Contra Entrega:</span>
+              <span id="payFinal" class="font-bold text-slate-900 dark:text-white">$0 COP</span>
+            </div>
+          </div>
+
+          <!-- COMISIONES (Panel Adm) -->
+          <div id="referralCommissionBox" class="hidden bg-emerald-950/30 border border-emerald-500/40 rounded-xl p-4 mb-6 space-y-3">
+            <div class="flex items-center justify-between border-b border-emerald-500/20 pb-2">
+              <span class="text-xs font-bold uppercase tracking-wider text-emerald-400 flex items-center gap-1.5">
+                <i class="fa-solid fa-coins"></i> Liquidación de Comisión
+              </span>
+              <span id="totalCommissionBadge" class="text-xs font-black bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 px-2 py-0.5 rounded-md">
+                $0 COP
+              </span>
+            </div>
+
+            <div class="space-y-1.5 text-xs text-slate-300">
+              <div class="flex justify-between">
+                <span class="text-slate-400">Comisión Base (10% Plan Base):</span>
+                <span id="commBaseVal" class="font-semibold text-slate-200">$0 COP</span>
+              </div>
+              <div class="flex justify-between">
+                <span class="text-slate-400">Comisión Sobrecosto (50% Excedente):</span>
+                <span id="commMarkupVal" class="font-semibold text-emerald-400">$0 COP</span>
+              </div>
+            </div>
+
+            <div class="bg-slate-950/60 rounded-lg p-2.5 border border-emerald-500/20 text-xs space-y-1.5 mt-2">
+              <span class="text-[11px] text-emerald-400 font-semibold block border-b border-slate-800 pb-1">Desembolsos al Aliado:</span>
+              <div class="flex justify-between text-slate-300">
+                <span>1er Pago (Con anticipo 50% cliente):</span>
+                <span id="commPay1" class="font-bold text-white">$0 COP</span>
+              </div>
+              <div class="flex justify-between text-slate-300">
+                <span>2do Pago (Con entrega final cliente):</span>
+                <span id="commPay2" class="font-bold text-white">$0 COP</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Acciones -->
+          <div class="space-y-2">
+            <button onclick="copyQuoteSummary()" class="w-full bg-slate-900 hover:bg-slate-800 dark:bg-slate-800 dark:hover:bg-slate-700 text-white font-semibold py-3 px-4 rounded-xl text-xs transition-all flex items-center justify-center gap-2">
+              <i class="fa-solid fa-copy"></i> Copiar Resumen
+            </button>
+            <div id="copyToast" class="hidden text-center text-xs text-emerald-500 pt-1 font-medium">
+              <i class="fa-solid fa-check-circle"></i> ¡Resumen copiado al portapapeles!
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+
+    <!-- SECCIÓN PASO A PASO / METODOLOGÍA DE TRABAJO -->
+    <section class="mt-16 bg-white dark:bg-slate-950/60 border border-slate-200 dark:border-slate-800/80 rounded-3xl p-6 sm:p-10 backdrop-blur-sm shadow-xl transition-colors duration-300">
+      <div class="text-center max-w-2xl mx-auto mb-12">
+        <span class="text-xs font-bold uppercase tracking-widest text-cyanBrand bg-cyanBrand/10 px-3 py-1 rounded-full border border-cyanBrand/20">Metodología de Trabajo</span>
+        <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white mt-3">Proceso Paso a Paso del Desarrollo</h2>
+        <p class="text-xs sm:text-sm text-slate-500 dark:text-slate-400 mt-2">Un flujo de trabajo transparente, organizado y estructurado para garantizar el éxito de tu proyecto digital desde el día uno.</p>
+      </div>
+
+      <!-- Timeline Container -->
+      <div class="relative timeline-line space-y-8 md:space-y-12">
+
+        <!-- Paso 1 -->
+        <div class="relative flex flex-col md:flex-row items-start md:items-center group">
+          <div class="flex items-center justify-center w-10 h-10 rounded-full brand-gradient-bg text-white font-black text-sm z-10 shadow-lg shadow-cyanBrand/30 md:absolute md:left-1/2 md:-translate-x-1/2">
+            1
+          </div>
+          <div class="ml-12 md:ml-0 md:w-1/2 md:pr-12 md:text-right mt-2 md:mt-0">
+            <div class="bg-slate-50 dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 p-5 rounded-2xl hover:border-cyanBrand transition-all shadow-sm">
+              <div class="flex items-center gap-2 text-cyanBrand font-bold text-xs uppercase mb-1 md:justify-end">
+                <i class="fa-solid fa-handshake"></i> Fases Iniciales
+              </div>
+              <h3 class="text-base font-bold text-slate-900 dark:text-white mb-1">Reunión Inicial</h3>
+              <p class="text-xs text-slate-600 dark:text-slate-400">Definición del producto web, alcance, tiempo y forma de pago, (hosting y dominio).</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Paso 2 -->
+        <div class="relative flex flex-col md:flex-row items-start md:items-center group">
+          <div class="flex items-center justify-center w-10 h-10 rounded-full brand-gradient-bg text-white font-black text-sm z-10 shadow-lg shadow-cyanBrand/30 md:absolute md:left-1/2 md:-translate-x-1/2">
+            2
+          </div>
+          <div class="ml-12 md:ml-0 md:w-1/2 md:pl-12 md:ml-auto mt-2 md:mt-0">
+            <div class="bg-slate-50 dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 p-5 rounded-2xl hover:border-cyanBrand transition-all shadow-sm">
+              <div class="flex items-center gap-2 text-purpleBrand dark:text-purple-400 font-bold text-xs uppercase mb-1">
+                <i class="fa-solid fa-palette"></i> Branding & Assets
+              </div>
+              <h3 class="text-base font-bold text-slate-900 dark:text-white mb-1">Envío de Identidad de Marca</h3>
+              <p class="text-xs text-slate-600 dark:text-slate-400">Recepción de logotipos, colores, fuentes de texto, tipo de diseño (Corporativo, Creativo) e información general de la empresa.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Paso 3 -->
+        <div class="relative flex flex-col md:flex-row items-start md:items-center group">
+          <div class="flex items-center justify-center w-10 h-10 rounded-full brand-gradient-bg text-white font-black text-sm z-10 shadow-lg shadow-cyanBrand/30 md:absolute md:left-1/2 md:-translate-x-1/2">
+            3
+          </div>
+          <div class="ml-12 md:ml-0 md:w-1/2 md:pr-12 md:text-right mt-2 md:mt-0">
+            <div class="bg-slate-50 dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 p-5 rounded-2xl hover:border-cyanBrand transition-all shadow-sm">
+              <div class="flex items-center gap-2 text-cyanBrand font-bold text-xs uppercase mb-1 md:justify-end">
+                <i class="fa-solid fa-sitemap"></i> Maquetación
+              </div>
+              <h3 class="text-base font-bold text-slate-900 dark:text-white mb-1">Opciones de Diseño & Estructura</h3>
+              <p class="text-xs text-slate-600 dark:text-slate-400">Entrega de opciones visuales y maquetación del contenido: Se define la maquetación y línea gráfica final a desarrollar.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Paso 4 -->
+        <div class="relative flex flex-col md:flex-row items-start md:items-center group">
+          <div class="flex items-center justify-center w-10 h-10 rounded-full brand-gradient-bg text-white font-black text-sm z-10 shadow-lg shadow-cyanBrand/30 md:absolute md:left-1/2 md:-translate-x-1/2">
+            4
+          </div>
+          <div class="ml-12 md:ml-0 md:w-1/2 md:pl-12 md:ml-auto mt-2 md:mt-0">
+            <div class="bg-slate-50 dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 p-5 rounded-2xl hover:border-cyanBrand transition-all shadow-sm">
+              <div class="flex items-center gap-2 text-purpleBrand dark:text-purple-400 font-bold text-xs uppercase mb-1">
+                <i class="fa-solid fa-code"></i> Desarrollo Frontend
+              </div>
+              <h3 class="text-base font-bold text-slate-900 dark:text-white mb-1">Elaboración del Sitio Web</h3>
+              <p class="text-xs text-slate-600 dark:text-slate-400">Fase intensiva de código. Se requiere el envío completo de la información de cada sección e imágenes (banco de fotos).</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Paso 5 -->
+        <div class="relative flex flex-col md:flex-row items-start md:items-center group">
+          <div class="flex items-center justify-center w-10 h-10 rounded-full brand-gradient-bg text-white font-black text-sm z-10 shadow-lg shadow-cyanBrand/30 md:absolute md:left-1/2 md:-translate-x-1/2">
+            5
+          </div>
+          <div class="ml-12 md:ml-0 md:w-1/2 md:pr-12 md:text-right mt-2 md:mt-0">
+            <div class="bg-slate-50 dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 p-5 rounded-2xl hover:border-cyanBrand transition-all shadow-sm">
+              <div class="flex items-center gap-2 text-cyanBrand font-bold text-xs uppercase mb-1 md:justify-end">
+                <i class="fa-solid fa-magnifying-glass"></i> Calidad & Ajustes
+              </div>
+              <h3 class="text-base font-bold text-slate-900 dark:text-white mb-1">Reunión de Revisión - V1</h3>
+              <p class="text-xs text-slate-600 dark:text-slate-400">Presentación del sitio web en hosting/dominio de pruebas temporal para evaluar la primera versión funcional y recopilar observaciones.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Paso 6 -->
+        <div class="relative flex flex-col md:flex-row items-start md:items-center group">
+          <div class="flex items-center justify-center w-10 h-10 rounded-full brand-gradient-bg text-white font-black text-sm z-10 shadow-lg shadow-cyanBrand/30 md:absolute md:left-1/2 md:-translate-x-1/2">
+            6
+          </div>
+          <div class="ml-12 md:ml-0 md:w-1/2 md:pl-12 md:ml-auto mt-2 md:mt-0">
+            <div class="bg-slate-50 dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 p-5 rounded-2xl hover:border-cyanBrand transition-all shadow-sm">
+              <div class="flex items-center gap-2 text-purpleBrand dark:text-purple-400 font-bold text-xs uppercase mb-1">
+                <i class="fa-solid fa-sliders"></i> Aprobación
+              </div>
+              <h3 class="text-base font-bold text-slate-900 dark:text-white mb-1">Reunión de Revisión - V2</h3>
+              <p class="text-xs text-slate-600 dark:text-slate-400">Segunda rueda de ajustes finales sobre observaciones previamente acordadas para dar luz verde al lanzamiento.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Paso 7 -->
+        <div class="relative flex flex-col md:flex-row items-start md:items-center group">
+          <div class="flex items-center justify-center w-10 h-10 rounded-full brand-gradient-bg text-white font-black text-sm z-10 shadow-lg shadow-cyanBrand/30 md:absolute md:left-1/2 md:-translate-x-1/2">
+            7
+          </div>
+          <div class="ml-12 md:ml-0 md:w-1/2 md:pr-12 md:text-right mt-2 md:mt-0">
+            <div class="bg-slate-50 dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 p-5 rounded-2xl hover:border-emerald-500 transition-all shadow-sm border-l-4 md:border-l border-emerald-500">
+              <div class="flex items-center gap-2 text-emerald-500 font-bold text-xs uppercase mb-1 md:justify-end">
+                <i class="fa-solid fa-rocket"></i> Lanzamiento
+              </div>
+              <h3 class="text-base font-bold text-slate-900 dark:text-white mb-1">Entrega Final & Publicación</h3>
+              <p class="text-xs text-slate-600 dark:text-slate-400">Despliegue definitivo del sitio web publicado en internet en el dominio oficial del cliente.</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- BOTÓN FLOTANTE WHATSAPP -->
+  <a id="btnWhatsappFloat" href="#" target="_blank" class="fixed bottom-6 right-6 z-40 bg-emerald-500 hover:bg-emerald-600 text-white p-4 rounded-full shadow-2xl transition-all duration-300 hover:scale-110 flex items-center justify-center group">
+    <i class="fa-brands fa-whatsapp text-3xl"></i>
+    <span class="max-w-0 overflow-hidden whitespace-nowrap group-hover:max-w-xs transition-all duration-300 ease-in-out text-xs font-bold pl-0 group-hover:pl-2">
+      Enviar Cotización por WhatsApp
+    </span>
+  </a>
+
+  <script>
+    // --- DATOS ---
+    const services = [
+      {
+        id: 'landing_essential',
+        title: 'Landing Page Esencial',
+        stack: 'HTML5 / CSS3 / JavaScript',
+        desc: 'Página única responsiva, ideal para campañas específicas o presencia rápida.',
+        price: 800000
+      },
+      {
+        id: 'site_essential',
+        title: 'Sitio Web Esencial',
+        stack: 'HTML5 / CSS3 / JavaScript',
+        desc: 'Sitio multi-página corporativo (Principal + Páginas Hijas) tradicional.',
+        price: 1200000
+      },
+      {
+        id: 'landing_pro',
+        title: 'Landing Page Pro',
+        stack: 'React / TypeScript / Tailwind CSS / TanStack',
+        desc: 'Ultra alta velocidad, renderizado optimizado, arquitectura moderna y escalable.',
+        price: 1600000
+      },
+      {
+        id: 'site_pro',
+        title: 'Sitio Web Pro',
+        stack: 'React / TypeScript / Tailwind CSS / TanStack',
+        desc: 'Sitio web multi-página con máximo rendimiento, velocidad y SEO dinámico.',
+        price: 2100000
+      },
+      {
+        id: 'site_cms',
+        title: 'Sitio Web Administrable',
+        stack: 'React / TypeScript / Tailwind / Headless CMS',
+        desc: 'Incluye panel de control autogestionable para actualizar contenidos fácilmente.',
+        price: 2800000
+      }
+    ];
+
+    const addons = [
+      { id: 'chatbot', title: 'Chatbot FAQ & Contacto', price: 350000 },
+      { id: 'ads_seo', title: 'SEO Avanzado & Publicidad', price: 450000 },
+      { id: 'graphic_design', title: 'Diseño Gráfico de Piezas', price: 300000 },
+      { id: 'support_monthly', title: 'Soporte Premium Mensual', price: 200000 }
+    ];
+
+    // --- ESTADO ---
+    let currentMode = 'client';
+    let selectedServiceId = 'site_pro';
+    let selectedAddons = [];
+    let currentMarkup = 0;
+    const ADMIN_CODE = 'Referidor-comision';
+
+    // --- FORMATEADOR ---
+    const formatCOP = (amount) => {
+      return new Intl.NumberFormat('es-CO', {
+        style: 'currency',
+        currency: 'COP',
+        maximumFractionDigits: 0
+      }).format(amount);
+    };
+
+    // --- TEMA CLARO / OSCURO ---
+    function toggleTheme() {
+      const html = document.documentElement;
+      const themeIcon = document.getElementById('themeIcon');
+      if (html.classList.contains('dark')) {
+        html.classList.remove('dark');
+        themeIcon.className = 'fa-solid fa-sun';
+      } else {
+        html.classList.add('dark');
+        themeIcon.className = 'fa-solid fa-moon';
+      }
+    }
+
+    // --- MODAL PANEL ADM ---
+    function openAdminModal() {
+      if (currentMode === 'referral') {
+        setMode('client');
+        return;
+      }
+      document.getElementById('adminModal').classList.remove('hidden');
+      document.getElementById('adminCodeInput').focus();
+    }
+
+    function closeAdminModal() {
+      document.getElementById('adminModal').classList.add('hidden');
+      document.getElementById('adminCodeInput').value = '';
+      document.getElementById('authError').classList.add('hidden');
+    }
+
+    function handleAdminAuth(e) {
+      e.preventDefault();
+      const code = document.getElementById('adminCodeInput').value;
+      if (code === ADMIN_CODE) {
+        closeAdminModal();
+        setMode('referral');
+      } else {
+        document.getElementById('authError').classList.remove('hidden');
+      }
+    }
+
+    // --- MODO CLIENTE / ADM ---
+    function setMode(mode) {
+      currentMode = mode;
+      
+      const btnClient = document.getElementById('btnClientMode');
+      const btnRef = document.getElementById('btnReferralMode');
+      const refBanner = document.getElementById('referralBanner');
+      const markupSec = document.getElementById('markupSection');
+      const commBox = document.getElementById('referralCommissionBox');
+      const rowMarkup = document.getElementById('rowSummaryMarkup');
+      const badgeMode = document.getElementById('badgeMode');
+      const stepAddonsNum = document.getElementById('stepAddonsNum');
+
+      if (mode === 'referral') {
+        btnClient.className = "px-3.5 py-1.5 rounded-lg text-xs font-semibold text-slate-500 dark:text-slate-400 hover:text-white transition-all duration-200";
+        btnRef.className = "px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-all duration-200 bg-emerald-600 text-white shadow-md";
+        btnRef.innerHTML = `<i class="fa-solid fa-lock-open mr-1.5"></i>Panel Adm`;
+        
+        refBanner.classList.remove('hidden');
+        markupSec.classList.remove('hidden');
+        commBox.classList.remove('hidden');
+        rowMarkup.classList.remove('hidden');
+        
+        badgeMode.innerText = 'Vista Panel Adm';
+        badgeMode.className = 'text-xs font-normal px-2.5 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20';
+        stepAddonsNum.innerText = '3';
+      } else {
+        btnClient.className = "px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-all duration-200 bg-brand-600 text-white shadow-md";
+        btnRef.className = "px-3.5 py-1.5 rounded-lg text-xs font-semibold text-slate-500 dark:text-slate-400 hover:text-white transition-all duration-200";
+        btnRef.innerHTML = `<i class="fa-solid fa-lock mr-1.5"></i>Panel Adm`;
+
+        refBanner.classList.add('hidden');
+        markupSec.classList.add('hidden');
+        commBox.classList.add('hidden');
+        rowMarkup.classList.add('hidden');
+        
+        badgeMode.innerText = 'Vista Cliente';
+        badgeMode.className = 'text-xs font-normal px-2.5 py-0.5 rounded-full bg-cyanBrand/10 text-cyanBrand border border-cyanBrand/20';
+        stepAddonsNum.innerText = '2';
+        
+        currentMarkup = 0;
+        document.getElementById('markupRange').value = 0;
+      }
+
+      updateCalculation();
+    }
+
+    // --- RENDER ---
+    function renderServices() {
+      const container = document.getElementById('servicesList');
+      container.innerHTML = services.map(s => {
+        const isSelected = s.id === selectedServiceId;
+        return `
+          <div onclick="selectService('${s.id}')" 
+               class="cursor-pointer p-4 rounded-xl border transition-all duration-200 flex items-start justify-between ${
+                 isSelected 
+                   ? 'bg-cyanBrand/5 dark:bg-slate-900 border-cyanBrand ring-1 ring-cyanBrand' 
+                   : 'bg-slate-50 dark:bg-slate-900/40 border-slate-200 dark:border-slate-800 hover:border-slate-300 dark:hover:border-slate-700'
+               }">
+            <div class="space-y-1 pr-4">
+              <div class="flex items-center gap-2">
+                <span class="font-bold text-slate-900 dark:text-white text-sm">${s.title}</span>
+                <span class="text-[10px] px-2 py-0.5 rounded-full bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-mono">${s.stack}</span>
+              </div>
+              <p class="text-xs text-slate-500 dark:text-slate-400">${s.desc}</p>
+            </div>
+            <div class="text-right flex-shrink-0">
+              <span class="text-sm font-extrabold text-cyanBrand">${formatCOP(s.price)}</span>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function renderAddons() {
+      const container = document.getElementById('addonsList');
+      container.innerHTML = addons.map(a => {
+        const isChecked = selectedAddons.includes(a.id);
+        return `
+          <div onclick="toggleAddon('${a.id}')" 
+               class="cursor-pointer p-3 rounded-xl border transition-all duration-200 flex items-center justify-between ${
+                 isChecked 
+                   ? 'bg-cyanBrand/5 dark:bg-slate-900 border-cyanBrand text-slate-900 dark:text-white' 
+                   : 'bg-slate-50 dark:bg-slate-900/40 border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-400 hover:border-slate-300'
+               }">
+            <div class="flex items-center space-x-2.5">
+              <input type="checkbox" ${isChecked ? 'checked' : ''} class="rounded border-slate-300 dark:border-slate-700 text-cyanBrand focus:ring-0">
+              <span class="text-xs font-medium">${a.title}</span>
+            </div>
+            <span class="text-xs font-bold text-slate-800 dark:text-slate-300">${formatCOP(a.price)}</span>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function selectService(id) {
+      selectedServiceId = id;
+      renderServices();
+      updateCalculation();
+    }
+
+    function toggleAddon(id) {
+      if (selectedAddons.includes(id)) {
+        selectedAddons = selectedAddons.filter(a => a !== id);
+      } else {
+        selectedAddons.push(id);
+      }
+      renderAddons();
+      updateCalculation();
+    }
+
+    // --- CÁLCULOS & WHATSAPP ---
+    function updateCalculation() {
+      const activeService = services.find(s => s.id === selectedServiceId) || services[0];
+      const basePrice = activeService.price;
+
+      currentMarkup = parseInt(document.getElementById('markupRange').value) || 0;
+      const markupPercentage = Math.round((currentMarkup / basePrice) * 100);
+
+      const addonsTotal = selectedAddons.reduce((sum, addonId) => {
+        const item = addons.find(a => a.id === addonId);
+        return sum + (item ? item.price : 0);
+      }, 0);
+
+      const totalPrice = basePrice + currentMarkup + addonsTotal;
+      const payInitial = totalPrice * 0.5;
+      const payFinal = totalPrice * 0.5;
+
+      const commBase = basePrice * 0.10;
+      const referralMarkupShare = currentMarkup * 0.50;
+      const devMarkupShare = currentMarkup * 0.50;
+      const totalCommission = commBase + referralMarkupShare;
+
+      const commPay1 = totalCommission * 0.5;
+      const commPay2 = totalCommission * 0.5;
+
+      // DOM Updates
+      document.getElementById('markupDisplayVal').innerText = `${formatCOP(currentMarkup)} (+${markupPercentage}%)`;
+      document.getElementById('referralMarkupShare').innerText = formatCOP(referralMarkupShare);
+      document.getElementById('devMarkupShare').innerText = formatCOP(devMarkupShare);
+
+      document.getElementById('summaryBasePrice').innerText = formatCOP(basePrice);
+      document.getElementById('summaryMarkupPrice').innerText = `+${formatCOP(currentMarkup)}`;
+      document.getElementById('summaryAddonsPrice').innerText = formatCOP(addonsTotal);
+      document.getElementById('summaryTotalPrice').innerText = formatCOP(totalPrice);
+
+      document.getElementById('payInitial').innerText = formatCOP(payInitial);
+      document.getElementById('payFinal').innerText = formatCOP(payFinal);
+
+      document.getElementById('totalCommissionBadge').innerText = formatCOP(totalCommission);
+      document.getElementById('commBaseVal').innerText = formatCOP(commBase);
+      document.getElementById('commMarkupVal').innerText = formatCOP(referralMarkupShare);
+      document.getElementById('commPay1').innerText = formatCOP(commPay1);
+      document.getElementById('commPay2').innerText = formatCOP(commPay2);
+
+      // Enlace dinámico WhatsApp
+      updateWhatsappLink(activeService, totalPrice, payInitial, payFinal);
+    }
+
+    function generateQuoteText(activeService, totalPrice, payInitial, payFinal) {
+      const activeAddonsObj = selectedAddons.map(id => addons.find(a => a.id === id));
+      
+      let text = `Hola *SYNAPTECH*, coticé una solución web en su plataforma:\n\n`;
+      text += `🚀 *Plan:* ${activeService.title}\n`;
+      text += `💻 *Tecnología:* ${activeService.stack}\n`;
+      text += `💰 *Inversión Total:* ${formatCOP(totalPrice)}\n\n`;
+
+      if (activeAddonsObj.length > 0) {
+        text += `➕ *Adicionales:* ${activeAddonsObj.map(a => a.title).join(', ')}\n\n`;
+      }
+
+      text += `💳 *Esquema de Pago (50/50):*\n`;
+      text += `- Anticipo (50%): ${formatCOP(payInitial)}\n`;
+      text += `- Contra entrega (50%): ${formatCOP(payFinal)}\n\n`;
+      text += `✨ *Incluye:* SEO/GEO, Ciberseguridad, Prototipado y Visualización en Hosting Temporal.\n`;
+      text += `Deseo avanzar con el desarrollo.`;
+
+      return text;
+    }
+
+    function updateWhatsappLink(activeService, totalPrice, payInitial, payFinal) {
+      const quoteText = generateQuoteText(activeService, totalPrice, payInitial, payFinal);
+      const encodedText = encodeURIComponent(quoteText);
+      const waButton = document.getElementById('btnWhatsappFloat');
+      waButton.href = `https://wa.me/+573003278670?text=${encodedText}`;
+    }
+
+    function copyQuoteSummary() {
+      const activeService = services.find(s => s.id === selectedServiceId);
+      const basePrice = activeService.price;
+      const addonsTotal = selectedAddons.reduce((sum, id) => sum + (addons.find(a => a.id === id)?.price || 0), 0);
+      const totalPrice = basePrice + currentMarkup + addonsTotal;
+
+      const summaryText = generateQuoteText(activeService, totalPrice, totalPrice * 0.5, totalPrice * 0.5);
+
+      navigator.clipboard.writeText(summaryText).then(() => {
+        const toast = document.getElementById('copyToast');
+        toast.classList.remove('hidden');
+        setTimeout(() => toast.classList.add('hidden'), 3000);
+      });
+    }
+
+    // Inicialización
+    renderServices();
+    renderAddons();
+    updateCalculation();
+  </script>
+</body>
+</html>
